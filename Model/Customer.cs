@@ -4,26 +4,28 @@ namespace LegitBankApp.Model
 {
     public class Customer : User 
     {
-        public string _accountNumber {get; set;}
-        public string _pin           {get; set;}
-        public string _accountType   {get; set;}
-        public int _customerRegNum   {get; set;}
-        public double _accountBalance {get; set;}
+        public int Id {get; set;}
+        public string AccountNumber {get; set;}
+        public string Pin           {get; set;}
+        public string AccountType   {get; set;}
+        public int CustomerRegNum   {get; set;}
+        public double AccountBalance {get; set;}
+        
 
         public Customer(string firstName,string lastName,string age,string email,string password,string phoneNumber,string address,string gender,string pin,string accountType,double accountBalance) : base (firstName,lastName,age,email,password,phoneNumber,address,gender)
         {
-            this._accountNumber = GenerateCustomerAcountNumber();
-            this._pin = pin;
-            this._accountType = accountType; 
-            this._firstName = firstName;
-            this._lastName = lastName;
-            this._age = age;
-            this._email = email;
-            this._password = password;
-            this._address = address;
-            this._gender = gender;
-            this._accountType = accountType;
-            this._accountBalance = accountBalance;
+            this.AccountNumber = GenerateCustomerAcountNumber();
+            this.Pin = pin;
+            this.AccountType = accountType; 
+            this.FirstName = firstName;
+            this.LastName = lastName;
+            this.Age = age;
+            this.Email = email;
+            this.Password = password;
+            this.Address = address;
+            this.Gender = gender;
+            this.AccountType = accountType;
+            this.AccountBalance = accountBalance;
         }
 
     
@@ -32,7 +34,7 @@ namespace LegitBankApp.Model
             {
                 Random random = new Random();
                 Random rand = new Random();
-                string preTest =_customerRegNum.ToString();
+                string preTest =CustomerRegNum.ToString();
                 string customerAccountNumber = $"{random.Next(300,700).ToString()}{random.Next(100, 900).ToString()}{rand.Next(100,400).ToString()}0";
                 return customerAccountNumber;
 

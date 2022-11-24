@@ -19,30 +19,31 @@ namespace LegitBankApp.Implementations
         {
             var customer = new CustomerManager();
             var test = customer.GetCustomer(accountnumber2);
-            if (test._accountType == "Student account")
+            if (test.AccountType == "Student account")
             {
-                if (test._accountBalance <= 200000)
+                if (test.AccountBalance <= 200000)
                 {
 
-                    if (airtimeAmount <= test._accountBalance)
+                    if (airtimeAmount <= test.AccountBalance)
                     {
 
                         try
                         {
 
                             Transaction transact = new Transaction(accountBalance, withdrawalAmount, depositAmount, airtimeAmount,transferAmount, accountnumber2, dateTime, refNum, pin);
-                            string u = $"{transact._refNum}";
+                            string u = $"{transact.RefNum}";
                             System.Console.Write("Your ref number is:");
                             System.Console.WriteLine(u);
 
                             using (var connection = new MySqlConnection(conn))
                             {
-                                test._accountBalance -= airtimeAmount;
-                                Transaction._accountBalance = test._accountBalance;
+
+                                test.AccountBalance -= airtimeAmount;
+                                transact.AccountBalance = test.AccountBalance;
                                 var cus = new Customer(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", 0);
-                                cus._accountBalance = test._accountBalance;
-                                string qur = $"insert into Transaction (accountBalance,withdrawalAmount,depositAmount,airtimeAmount,accountNumber,time,refNum,pin) values ('{test._accountBalance}','{Transaction._withdrawalAmount}','{Transaction._depositAmount}','{Transaction._airtimeAmount}','{accountnumber2}','{Transaction._dateTime}','{u}','{pin}')";
-                                string qur2 = $"update customer set accountBalance = {test._accountBalance} where accountNumber = {accountnumber2}";
+                                cus.AccountBalance = test.AccountBalance;
+                                string qur = $"insert into Transaction (accountBalance,withdrawalAmount,depositAmount,airtimeAmount,accountNumber,time,refNum,pin) values ('{test.AccountBalance}','{transact.WithdrawalAmount}','{transact.DepositAmount}','{transact.AirtimeAmount}','{accountnumber2}','{transact.DateTime}','{u}','{pin}')";
+                                string qur2 = $"update customer set accountBalance = {test.AccountBalance} where accountNumber = {accountnumber2}";
 
 
                                 connection.Open();
@@ -53,7 +54,7 @@ namespace LegitBankApp.Implementations
                                     {
 
                                         System.Console.WriteLine($"Transaction successful ! ");
-                                        System.Console.WriteLine($"\n\tTnx: Debit\n\tAc: {accountnumber2[0]}{accountnumber2[1]}*****{accountnumber2[7]}{accountnumber2[8]}*\n\tAmt: NGN {airtimeAmount}\n\tYour balance is: {test._accountBalance}\n\tDate: {dateTime}");
+                                        System.Console.WriteLine($"\n\tTnx: Debit\n\tAc: {accountnumber2[0]}{accountnumber2[1]}*****{accountnumber2[7]}{accountnumber2[8]}*\n\tAmt: NGN {airtimeAmount}\n\tYour balance is: {test.AccountBalance}\n\tDate: {dateTime}");
 
                                     }
                                 }
@@ -86,28 +87,28 @@ namespace LegitBankApp.Implementations
 
 
 
-            if (test._accountType == "Current account" || test._accountType == "Savings account" || test._accountType == "Business account" || test._accountType == "Joint account")
+            if (test.AccountType == "Current account" || test.AccountType == "Savings account" || test.AccountType == "Business account" || test.AccountType == "Joint account")
             {
 
-                if (airtimeAmount < test._accountBalance && test._accountBalance >= 500)
+                if (airtimeAmount < test.AccountBalance && test.AccountBalance >= 500)
                 {
 
                     try
                     {
 
                         Transaction transact = new Transaction(accountBalance, withdrawalAmount, depositAmount, airtimeAmount,transferAmount,accountnumber2, dateTime, refNum, pin);
-                        string u = $"{transact._refNum}";
+                        string u = $"{transact.RefNum}";
                         System.Console.Write("Your ref number is:");
                         System.Console.WriteLine(u);
 
                         using (var connection = new MySqlConnection(conn))
                         {
-                            test._accountBalance -= airtimeAmount;
-                            Transaction._accountBalance = test._accountBalance;
+                            test.AccountBalance -= airtimeAmount;
+                            transact.AccountBalance = test.AccountBalance;
                             var cus = new Customer(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", 0);
-                            cus._accountBalance = test._accountBalance;
-                            string qur = $"insert into Transaction (accountBalance,withdrawalAmount,depositAmount,airtimeAmount,accountNumber,time,refNum,pin) values ('{test._accountBalance}','{Transaction._withdrawalAmount}','{Transaction._depositAmount}','{Transaction._airtimeAmount}','{accountnumber2}','{Transaction._dateTime}','{u}','{pin}')";
-                            string qur2 = $"update customer set accountBalance = {test._accountBalance} where accountNumber = {accountnumber2}";
+                            cus.AccountBalance = test.AccountBalance;
+                            string qur = $"insert into Transaction (accountBalance,withdrawalAmount,depositAmount,airtimeAmount,accountNumber,time,refNum,pin) values ('{test.AccountBalance}','{transact.WithdrawalAmount}','{transact.DepositAmount}','{transact.AirtimeAmount}','{accountnumber2}','{transact.DateTime}','{u}','{pin}')";
+                            string qur2 = $"update customer set accountBalance = {test.AccountBalance} where accountNumber = {accountnumber2}";
 
 
                             connection.Open();
@@ -118,7 +119,7 @@ namespace LegitBankApp.Implementations
                                 {
 
                                     System.Console.WriteLine($"Transaction successful ! ");
-                                    System.Console.WriteLine($"\n\tTnx: Debit\n\tAc: {accountnumber2[0]}{accountnumber2[1]}*****{accountnumber2[7]}{accountnumber2[8]}*\n\tAmt: NGN {airtimeAmount}\n\tYour balance is: {test._accountBalance}\n\tDate: {dateTime}");
+                                    System.Console.WriteLine($"\n\tTnx: Debit\n\tAc: {accountnumber2[0]}{accountnumber2[1]}*****{accountnumber2[7]}{accountnumber2[8]}*\n\tAmt: NGN {airtimeAmount}\n\tYour balance is: {test.AccountBalance}\n\tDate: {dateTime}");
 
                                 }
                             }
@@ -155,19 +156,19 @@ namespace LegitBankApp.Implementations
             {
 
                 Transaction transact = new Transaction(accountBalance, withdrawalAmount, depositAmount, airtimeAmount,transferAmount,accountnumber2, dateTime, refNum, pin);
-                string u = $"{transact._refNum}";
+                string u = $"{transact.RefNum}";
                 System.Console.Write("Your ref number is:");
                 System.Console.WriteLine(u);
 
                 using (var connection = new MySqlConnection(conn))
                 {
-                    test._accountBalance += depositAmount;
-                    Transaction._depositAmount = depositAmount;
+                    test.AccountBalance += depositAmount;
+                    transact.DepositAmount = depositAmount;
                     var cus = new Customer(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", 0);
-                    cus._accountBalance = test._accountBalance;
-                    accountBalance = test._accountBalance;
-                    string qur = $"insert into Transaction (accountBalance,withdrawalAmount,depositAmount,airtimeAmount,accountNumber,time,refNum,pin) values ('{test._accountBalance}','{Transaction._withdrawalAmount}','{Transaction._depositAmount}','{Transaction._airtimeAmount}','{accountnumber2}','{Transaction._dateTime}','{u}','{pin}')";
-                    string qur2 = $"update customer set accountBalance = {test._accountBalance} where accountNumber = {accountnumber2}";
+                    cus.AccountBalance = test.AccountBalance;
+                    accountBalance = test.AccountBalance;
+                    string qur = $"insert into Transaction (accountBalance,withdrawalAmount,depositAmount,airtimeAmount,accountNumber,time,refNum,pin) values ('{test.AccountBalance}','{transact.WithdrawalAmount}','{transact.DepositAmount}','{transact.AirtimeAmount}','{accountnumber2}','{transact.DateTime}','{u}','{pin}')";
+                    string qur2 = $"update customer set accountBalance = {test.AccountBalance} where accountNumber = {accountnumber2}";
 
 
                     connection.Open();
@@ -178,7 +179,7 @@ namespace LegitBankApp.Implementations
                         {
 
                             System.Console.WriteLine($"Transaction successful ! ");
-                            System.Console.WriteLine($"\n\tTnx: Credit\n\tAc: {accountnumber2[0]}{accountnumber2[1]}*****{accountnumber2[7]}{accountnumber2[8]}*\n\tAmt: NGN {depositAmount}\n\tInto: {accountnumber2}\n\tYour balance is: {test._accountBalance}\n\tDate: {dateTime}");
+                            System.Console.WriteLine($"\n\tTnx: Credit\n\tAc: {accountnumber2[0]}{accountnumber2[1]}*****{accountnumber2[7]}{accountnumber2[8]}*\n\tAmt: NGN {depositAmount}\n\tInto: {accountnumber2}\n\tYour balance is: {test.AccountBalance}\n\tDate: {dateTime}");
 
                         }
                     }
@@ -205,31 +206,31 @@ namespace LegitBankApp.Implementations
         {
             var customer = new CustomerManager();
             var test = customer.GetCustomer(accountnumber2);
-            if (test._accountType == "Student account")
+            if (test.AccountType == "Student account")
             {
-                if (test._accountBalance <= 200000)
+                if (test.AccountBalance <= 200000)
                 {
 
 
-                    if (withdrawalAmount <= test._accountBalance)
+                    if (withdrawalAmount <= test.AccountBalance)
                     {
                         try
                         {
 
                             Transaction transact = new Transaction(accountBalance, withdrawalAmount, depositAmount, airtimeAmount,transferAmount,accountnumber2, dateTime, refNum, pin);
-                            string u = $"{transact._refNum}";
+                            string u = $"{transact.RefNum}";
                             System.Console.Write("Your ref number is:");
                             System.Console.WriteLine(u);
 
                             using (var connection = new MySqlConnection(conn))
                             {
-                                test._accountBalance -= withdrawalAmount;
-                                Transaction._withdrawalAmount = withdrawalAmount;
+                                test.AccountBalance -= withdrawalAmount;
+                                transact.WithdrawalAmount = withdrawalAmount;
                                 var cus = new Customer(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", 0);
-                                cus._accountBalance = test._accountBalance;
-                                accountBalance = test._accountBalance;
-                                string qur = $"insert into Transaction (accountBalance,withdrawalAmount,depositAmount,airtimeAmount,accountNumber,time,refNum,pin) values ('{test._accountBalance}','{Transaction._withdrawalAmount}','{Transaction._depositAmount}','{Transaction._airtimeAmount}','{accountnumber2}','{Transaction._dateTime}','{u}','{pin}')";
-                                string qur2 = $"update customer set accountBalance = {test._accountBalance} where accountNumber = {accountnumber2}";
+                                cus.AccountBalance = test.AccountBalance;
+                                accountBalance = test.AccountBalance;
+                                string qur = $"insert into Transaction (accountBalance,withdrawalAmount,depositAmount,airtimeAmount,accountNumber,time,refNum,pin) values ('{test.AccountBalance}','{transact.WithdrawalAmount}','{transact.DepositAmount}','{transact.AirtimeAmount}','{accountnumber2}','{transact.DateTime}','{u}','{pin}')";
+                                string qur2 = $"update customer set accountBalance = {test.AccountBalance} where accountNumber = {accountnumber2}";
 
 
                                 connection.Open();
@@ -240,7 +241,7 @@ namespace LegitBankApp.Implementations
                                     {
 
                                         System.Console.WriteLine($"Transaction successful ! ");
-                                        System.Console.WriteLine($"\n\tTnx: Debit\n\tAc: {accountnumber2[0]}{accountnumber2[1]}*****{accountnumber2[7]}{accountnumber2[8]}*\n\tAmt: NGN {withdrawalAmount}\n\tFrom: {accountnumber2}\n\tYour balance is: {test._accountBalance}\n\tDate: {dateTime}");
+                                        System.Console.WriteLine($"\n\tTnx: Debit\n\tAc: {accountnumber2[0]}{accountnumber2[1]}*****{accountnumber2[7]}{accountnumber2[8]}*\n\tAmt: NGN {withdrawalAmount}\n\tFrom: {accountnumber2}\n\tYour balance is: {test.AccountBalance}\n\tDate: {dateTime}");
 
                                     }
                                 }
@@ -277,27 +278,27 @@ namespace LegitBankApp.Implementations
 
 
 
-            if (test._accountType == "Current account" || test._accountType == "Savings account" || test._accountType == "Business account" || test._accountType == "Joint account")
+            if (test.AccountType == "Current account" || test.AccountType == "Savings account" || test.AccountType == "Business account" || test.AccountType == "Joint account")
             {
-                if (withdrawalAmount < test._accountBalance && test._accountBalance >= 500)
+                if (withdrawalAmount < test.AccountBalance && test.AccountBalance >= 500)
                 {
                     try
                     {
 
                         Transaction transact = new Transaction(accountBalance, withdrawalAmount, depositAmount, airtimeAmount,transferAmount,accountnumber2, dateTime, refNum, pin);
-                        string u = $"{transact._refNum}";
+                        string u = $"{transact.RefNum}";
                         System.Console.Write("Your ref number is:");
                         System.Console.WriteLine(u);
 
                         using (var connection = new MySqlConnection(conn))
                         {
-                            test._accountBalance -= withdrawalAmount;
-                            Transaction._withdrawalAmount = withdrawalAmount;
+                            test.AccountBalance -= withdrawalAmount;
+                            transact.WithdrawalAmount = withdrawalAmount;
                             var cus = new Customer(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", 0);
-                            cus._accountBalance = test._accountBalance;
-                            accountBalance = test._accountBalance;
-                            string qur = $"insert into Transaction (accountBalance,withdrawalAmount,depositAmount,airtimeAmount,accountNumber,time,refNum,pin) values ('{test._accountBalance}','{Transaction._withdrawalAmount}','{Transaction._depositAmount}','{Transaction._airtimeAmount}','{accountnumber2}','{Transaction._dateTime}','{u}','{pin}')";
-                            string qur2 = $"update customer set accountBalance = {test._accountBalance} where accountNumber = {accountnumber2}";
+                            cus.AccountBalance = test.AccountBalance;
+                            accountBalance = test.AccountBalance;
+                            string qur = $"insert into Transaction (accountBalance,withdrawalAmount,depositAmount,airtimeAmount,accountNumber,time,refNum,pin) values ('{test.AccountBalance}','{transact.WithdrawalAmount}','{transact.DepositAmount}','{transact.AirtimeAmount}','{accountnumber2}','{transact.DateTime}','{u}','{pin}')";
+                            string qur2 = $"update customer set accountBalance = {test.AccountBalance} where accountNumber = {accountnumber2}";
 
 
                             connection.Open();
@@ -308,7 +309,7 @@ namespace LegitBankApp.Implementations
                                 {
 
                                     System.Console.WriteLine($"Transaction successful ! ");
-                                    System.Console.WriteLine($"\n\tTnx: Debit\n\tAc: {accountnumber2[0]}{accountnumber2[1]}*****{accountnumber2[7]}{accountnumber2[8]}*\n\tAmt: NGN {withdrawalAmount}\n\tFrom: {accountnumber2}\n\tYour balance is: {test._accountBalance}\n\tDate: {dateTime}");
+                                    System.Console.WriteLine($"\n\tTnx: Debit\n\tAc: {accountnumber2[0]}{accountnumber2[1]}*****{accountnumber2[7]}{accountnumber2[8]}*\n\tAmt: NGN {withdrawalAmount}\n\tFrom: {accountnumber2}\n\tYour balance is: {test.AccountBalance}\n\tDate: {dateTime}");
 
                                 }
                             }
@@ -346,31 +347,31 @@ namespace LegitBankApp.Implementations
              var customer = new CustomerManager();
             var test = customer.GetCustomer(senderAccountnumber);
             var test1 = customer.GetCustomer(recieverAccountnumber);
-            if (test._accountType == "Student account")
+            if (test.AccountType == "Student account")
             {
-                if (test._accountBalance <= 200000)
+                if (test.AccountBalance <= 200000)
                 {
 
-                    if (airtimeAmount <= test._accountBalance)
+                    if (airtimeAmount <= test.AccountBalance)
                     {
 
                         try
                         {
 
                             Transaction transact = new Transaction(accountBalance, withdrawalAmount, depositAmount, airtimeAmount,transferAmount, senderAccountnumber, dateTime, refNum, pin);
-                            string u = $"{transact._refNum}";
+                            string u = $"{transact.RefNum}";
                             System.Console.Write("Your ref number is:");
                             System.Console.WriteLine(u);
 
                             using (var connection = new MySqlConnection(conn))
                             {
-                                test._accountBalance -= transferAmount;
-                                Transaction._accountBalance = test._accountBalance;
+                                test.AccountBalance -= transferAmount;
+                                transact.AccountBalance = test.AccountBalance;
                                 var cus = new Customer(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", 0);
-                                cus._accountBalance = test._accountBalance;
-                                string qur = $"insert into Transaction (accountBalance,withdrawalAmount,depositAmount,airtimeAmount,accountNumber,time,refNum,pin,transferAmount) values ('{test._accountBalance}','{Transaction._withdrawalAmount}','{Transaction._depositAmount}','{Transaction._airtimeAmount}','{senderAccountnumber}','{Transaction._dateTime}','{u}','{pin}','{transferAmount}')";
-                                string qur2 = $"update customer set accountBalance = {test._accountBalance} where accountNumber = {senderAccountnumber}";
-                                string qur3 = $"update customer set accountBalance = {test1._accountBalance+=transferAmount} where accountNumber = {recieverAccountnumber}";
+                                cus.AccountBalance = test.AccountBalance;
+                                string qur = $"insert into Transaction (accountBalance,withdrawalAmount,depositAmount,airtimeAmount,accountNumber,time,refNum,pin,transferAmount) values ('{test.AccountBalance}','{transact.WithdrawalAmount}','{transact.DepositAmount}','{transact.AirtimeAmount}','{senderAccountnumber}','{transact.DateTime}','{u}','{pin}','{transferAmount}')";
+                                string qur2 = $"update customer set accountBalance = {test.AccountBalance} where accountNumber = {senderAccountnumber}";
+                                string qur3 = $"update customer set accountBalance = {test1.AccountBalance+=transferAmount} where accountNumber = {recieverAccountnumber}";
 
 
                                 connection.Open();
@@ -381,7 +382,7 @@ namespace LegitBankApp.Implementations
                                     {
 
                                         System.Console.WriteLine($"Transaction successful ! ");
-                                        System.Console.WriteLine($"\n\tTnx: Debit\n\tAc: {senderAccountnumber[0]}{senderAccountnumber[1]}*****{senderAccountnumber[7]}{senderAccountnumber[8]}*\n\tAmt: NGN {transferAmount}\n\tYour balance is: {test._accountBalance}\n\tDate: {dateTime}");
+                                        System.Console.WriteLine($"\n\tTnx: Debit\n\tAc: {senderAccountnumber[0]}{senderAccountnumber[1]}*****{senderAccountnumber[7]}{senderAccountnumber[8]}*\n\tAmt: NGN {transferAmount}\n\tYour balance is: {test.AccountBalance}\n\tDate: {dateTime}");
 
                                     }
                                 }
@@ -418,29 +419,29 @@ namespace LegitBankApp.Implementations
 
 
 
-            if (test._accountType == "Current account" || test._accountType == "Savings account" || test._accountType == "Business account" || test._accountType == "Joint account")
+            if (test.AccountType == "Current account" || test.AccountType == "Savings account" || test.AccountType == "Business account" || test.AccountType == "Joint account")
             {
 
-                if (airtimeAmount < test._accountBalance && test._accountBalance >= 500)
+                if (airtimeAmount < test.AccountBalance && test.AccountBalance >= 500)
                 {
 
                     try
                     {
 
                         Transaction transact = new Transaction(accountBalance, withdrawalAmount, depositAmount, airtimeAmount,transferAmount,senderAccountnumber, dateTime, refNum, pin);
-                        string u = $"{transact._refNum}";
+                        string u = $"{transact.RefNum}";
                         System.Console.Write("Your ref number is:");
                         System.Console.WriteLine(u);
 
                         using (var connection = new MySqlConnection(conn))
                         {
-                            test._accountBalance -= transferAmount;
-                            Transaction._accountBalance = test._accountBalance;
+                            test.AccountBalance -= transferAmount;
+                            transact.AccountBalance = test.AccountBalance;
                             var cus = new Customer(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", 0);
-                            cus._accountBalance = test._accountBalance;
-                            string qur = $"insert into Transaction (accountBalance,withdrawalAmount,depositAmount,airtimeAmount,accountNumber,time,refNum,pin,transferAmount) values ('{test._accountBalance}','{Transaction._withdrawalAmount}','{Transaction._depositAmount}','{Transaction._airtimeAmount}','{senderAccountnumber}','{Transaction._dateTime}','{u}','{pin}','{transferAmount}')";
-                                string qur2 = $"update customer set accountBalance = {test._accountBalance} where accountNumber = {senderAccountnumber}";
-                                string qur3 = $"update customer set accountBalance = {test1._accountBalance+=transferAmount} where accountNumber = {recieverAccountnumber}";
+                            cus.AccountBalance = test.AccountBalance;
+                            string qur = $"insert into Transaction (accountBalance,withdrawalAmount,depositAmount,airtimeAmount,accountNumber,time,refNum,pin,transferAmount) values ('{test.AccountBalance}','{transact.WithdrawalAmount}','{transact.DepositAmount}','{transact.AirtimeAmount}','{senderAccountnumber}','{transact.DateTime}','{u}','{pin}','{transferAmount}')";
+                                string qur2 = $"update customer set accountBalance = {test.AccountBalance} where accountNumber = {senderAccountnumber}";
+                                string qur3 = $"update customer set accountBalance = {test1.AccountBalance+=transferAmount} where accountNumber = {recieverAccountnumber}";
 
 
                             connection.Open();
@@ -451,7 +452,7 @@ namespace LegitBankApp.Implementations
                                 {
 
                                     System.Console.WriteLine($"Transaction successful ! ");
-                                    System.Console.WriteLine($"\n\tTnx: Debit\n\tAc: {senderAccountnumber[0]}{senderAccountnumber[1]}*****{senderAccountnumber[7]}{senderAccountnumber[8]}*\n\tAmt: NGN {transferAmount}\n\tYour balance is: {test._accountBalance}\n\tDate: {dateTime}");
+                                    System.Console.WriteLine($"\n\tTnx: Debit\n\tAc: {senderAccountnumber[0]}{senderAccountnumber[1]}*****{senderAccountnumber[7]}{senderAccountnumber[8]}*\n\tAmt: NGN {transferAmount}\n\tYour balance is: {test.AccountBalance}\n\tDate: {dateTime}");
 
                                 }
                             }

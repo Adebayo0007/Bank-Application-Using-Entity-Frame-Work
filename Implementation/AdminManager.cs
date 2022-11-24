@@ -11,26 +11,26 @@ namespace LegitBankApp.Implementations
     {
 
         
-        public string _data { get; set; }
         string conn = "Server=localhost;port=3306;Database=bankapp;Uid=root;Pwd=Adebayo58641999";
 
        
 
         public void CreateAdmin(string firstName, string lastName, string age, string email, string password, string phoneNumber, string address, string gender)
         {
+            /*
 
             try
             {
                 
                 Admin ad = new Admin(firstName, lastName, age, email, password, phoneNumber, address, gender);
 
-                System.Console.WriteLine($"\n\t<<<<<Your ID number is: {ad._staffID}>>>>>");
+                System.Console.WriteLine($"\n\t<<<<<Your ID number is: {ad.StaffID}>>>>>");
                
 
 
                 using (var connection = new MySqlConnection(conn))
                 {
-                    string qur = $"insert into admin (staffId,firstName, lastName, age, email, password, phoneNumber, address, gender) values ('{ad._staffID}','{ad._firstName}','{ad._lastName}','{ad._age}','{ad._email.Trim().ToUpper()}','{ad._password}','{ad._phoneNumber}','{ad._address}','{ad._gender}')";
+                    string qur = $"insert into admin (staffId,firstName, lastName, age, email, password, phoneNumber, address, gender) values ('{ad.StaffID}','{ad.FirstName}','{ad.LastName}','{ad.Age}','{ad.Email.Trim().ToUpper()}','{ad.Password}','{ad.PhoneNumber}','{ad.Address}','{ad.Gender}')";
                     connection.Open();
                     using (var command = new MySqlCommand(qur, connection))
                     {
@@ -47,12 +47,15 @@ namespace LegitBankApp.Implementations
             {
                 System.Console.WriteLine(ex.Message);
             }
+            */
 
 
         }
+        
 
         public void UpdateAdmin(string firstName, string lastname, string phoneNumber, string age, string email, string password, string address, string Id)
         {
+            /*
             var admin = GetAdmin(Id);
             if(admin != null)
             {
@@ -87,13 +90,16 @@ namespace LegitBankApp.Implementations
             {
                 System.Console.WriteLine("wrong input");
             }
+            */
 
 
         }
+        
 
 
         public void DeleteAdmin(string id)
         {
+            /*
            var admin = GetAdmin(id);
             if (admin != null)
             {
@@ -108,7 +114,7 @@ namespace LegitBankApp.Implementations
                             if(execute > 0)
                             {
 
-                                System.Console.WriteLine($"\n\t{admin._firstName} {admin._lastName} Successfully deleted. ");
+                                System.Console.WriteLine($"\n\t{admin.FirstName} {admin.LastName} Successfully deleted. ");
                             }
                            
                         }
@@ -123,6 +129,7 @@ namespace LegitBankApp.Implementations
             {
                 Console.WriteLine("User not found.");
             }
+            */
 
         }
 
@@ -131,31 +138,32 @@ namespace LegitBankApp.Implementations
 
         public Admin GetAdmin(string id)
         {
+            
 
-            Admin admin = null;
+            // Admin admin = null;
 
-            using (var connection = new MySqlConnection(conn))
-            {
-                connection.Open();
-                string query = $"select * from Admin where staffId ='{id}'  ";
+            // using (var connection = new MySqlConnection(conn))
+            // {
+            //     connection.Open();
+            //     string query = $"select * from Admin where staffId ='{id}'  ";
               
-                using (var command = new MySqlCommand(query, connection))
-                {
-                    var reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
+            //     using (var command = new MySqlCommand(query, connection))
+            //     {
+            //         var reader = command.ExecuteReader();
+            //         while (reader.Read())
+            //         {
                        
-                        admin = new Admin($"{reader["firstName"].ToString()}", $"{reader["lastName"].ToString()}", $"{reader["age"].ToString()}", $"{reader["email"].ToString()}", $"{reader["password"].ToString()}", $"{reader["phoneNumber"].ToString()}", $"{reader["address"].ToString()}", $"{reader["gender"].ToString()}");
+            //             admin = new Admin($"{reader["firstName"].ToString()}", $"{reader["lastName"].ToString()}", $"{reader["age"].ToString()}", $"{reader["email"].ToString()}", $"{reader["password"].ToString()}", $"{reader["phoneNumber"].ToString()}", $"{reader["address"].ToString()}", $"{reader["gender"].ToString()}");
 
-                    }
-                }
-            }
-            if (admin != null)
-            {
-                return admin;
-            }
+            //         }
+            //     }
+            // }
+            // if (admin != null)
+            // {
+            //     return admin;
+            // }
 
-            return null;
+            //return null;
 
         }
 
@@ -163,27 +171,27 @@ namespace LegitBankApp.Implementations
         public Admin Login(string email, string passWord)
         {
             
-            Admin admin = null;
-            try
-            {
-                using (var connection = new MySqlConnection(conn))
-                {
-                    connection.Open();
-                    using (var command = new MySqlCommand($"select * From admin WHERE email = '{email}'", connection))
-                    {
-                        var reader = command.ExecuteReader();
-                        while (reader.Read())
-                        {
-                            admin = new Admin( reader["firstName"].ToString(), reader["lastName"].ToString(),reader["age"].ToString(), reader["email"].ToString(), reader["password"].ToString(), reader["phoneNumber"].ToString(), reader["address"].ToString(),reader["staffId"].ToString());
-                        }
-                    }
-                }
-            }
-            catch (System.Exception ex)
-            {
-                System.Console.WriteLine(ex.Message);
-            }
-            return admin is not null && admin._email.ToUpper() == email.ToUpper() && admin._password == passWord ? admin : null;
+            // Admin admin = null;
+            // try
+            // {
+            //     using (var connection = new MySqlConnection(conn))
+            //     {
+            //         connection.Open();
+            //         using (var command = new MySqlCommand($"select * From admin WHERE email = '{email}'", connection))
+            //         {
+            //             var reader = command.ExecuteReader();
+            //             while (reader.Read())
+            //             {
+            //                 admin = new Admin( reader["firstName"].ToString(), reader["lastName"].ToString(),reader["age"].ToString(), reader["email"].ToString(), reader["password"].ToString(), reader["phoneNumber"].ToString(), reader["address"].ToString(),reader["staffId"].ToString());
+            //             }
+            //         }
+            //     }
+            // }
+            // catch (System.Exception ex)
+            // {
+            //     System.Console.WriteLine(ex.Message);
+            // }
+            //return admin is not null && admin.Email.ToUpper() == email.ToUpper() && admin.Password == passWord ? admin : null;
 
             }
 
@@ -191,20 +199,20 @@ namespace LegitBankApp.Implementations
         {
             
 
-            using (var connection = new MySqlConnection(conn))
-            {
-                connection.Open();
-                string query = $"select * from Admin";
-                using (var command = new MySqlCommand(query, connection))
-                {
-                    var reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        System.Console.WriteLine($"{reader["staffId"]}\t{reader["firstName"]}\t{reader["lastName"]}\t{reader["age"]}\t{reader["email"].ToString()}\t{reader["password"].ToString()}\t{reader["phoneNumber"].ToString()}\t{reader["address"].ToString()}\t{reader["gender"].ToString()}");
+            // using (var connection = new MySqlConnection(conn))
+            // {
+            //     connection.Open();
+            //     string query = $"select * from Admin";
+            //     using (var command = new MySqlCommand(query, connection))
+            //     {
+            //         var reader = command.ExecuteReader();
+            //         while (reader.Read())
+            //         {
+            //             System.Console.WriteLine($"{reader["staffId"]}\t{reader["firstName"]}\t{reader["lastName"]}\t{reader["age"]}\t{reader["email"].ToString()}\t{reader["password"].ToString()}\t{reader["phoneNumber"].ToString()}\t{reader["address"].ToString()}\t{reader["gender"].ToString()}");
 
-                    }
-                }
-            }
+            //         }
+            //     }
+            // }
             
         }
 

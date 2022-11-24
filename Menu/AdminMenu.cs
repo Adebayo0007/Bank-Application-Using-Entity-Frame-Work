@@ -336,7 +336,7 @@ public void LogInManagingDirector()
                    if(customer3 != null)
                             {
                                 System.Console.WriteLine("<<<<Filter Successful>>>>>");
-                                System.Console.WriteLine($"\nFirst Name: {customer3._firstName}\tLast Name: {customer3._lastName}\tAge: {customer3._age}\tMail: {customer3._email}\tPassword: {customer3._password}\n\nPhone number: {customer3._phoneNumber}\tGender:{customer3._gender}\tPin: {customer3._pin}\tAccount Type: {customer3._accountType}\tAccount Balance: {customer3._accountBalance}");
+                                System.Console.WriteLine($"\nFirst Name: {customer3.FirstName}\tLast Name: {customer3.LastName}\tAge: {customer3.Age}\tMail: {customer3.Email}\tPassword: {customer3.Password}\n\nPhone number: {customer3.PhoneNumber}\tGender:{customer3.Gender}\tPin: {customer3.Pin}\tAccount Type: {customer3.AccountType}\tAccount Balance: {customer3.AccountBalance}");
                             }
                             else
                             {
@@ -538,7 +538,7 @@ public void LogInManagingDirector()
                              if(admin3 != null)
                             {
                                 System.Console.WriteLine("<<<<Filter Successful>>>>>");
-                                System.Console.WriteLine($"\n{admin3._email}\t{admin3._firstName}\t{admin3._lastName}\t{admin3._age}\t{admin3._password}\t{admin3._phoneNumber}\t{admin3._address}\t{admin3._gender}");
+                                System.Console.WriteLine($"\n{admin3.Email}\t{admin3.FirstName}\t{admin3.LastName}\t{admin3.Age}\t{admin3.Password}\t{admin3.PhoneNumber}\t{admin3.Address}\t{admin3.Gender}");
                             }
                             else
                             {
@@ -620,7 +620,8 @@ public void LogInManagingDirector()
                             Console.Write("\tEnter four secrete digit Pin: ");
                             pin1 = Console.ReadLine();
                         }while(pin1.Length != 4 );
-                    double y = Transaction._accountBalance-=withdraw;
+                        var transact = new Transaction(0,0,0,0,0," "," "," "," ");
+                    double y = transact.AccountBalance-=withdraw;
                     double balance = y;
                      long depo = 0;
                      long airtime = 0;
@@ -632,7 +633,7 @@ public void LogInManagingDirector()
                      var check = cus.GetCustomer(acc);
                      if(check != null)
                      {
-                        if(check._pin == pin1)
+                        if(check.Pin == pin1)
                         {
 
                         _iTransactionManager.CreateWithdrawal(balance,withdraw,depo,airtime,transfer,acc,time,refNum,pin1);
@@ -680,8 +681,9 @@ public void LogInManagingDirector()
                             Console.Write("\tEnter four secrete digit Pin: ");
                             pin1 = Console.ReadLine();
                         }while(pin1.Length != 4 );
+                        var transact = new Transaction(0,0,0,0,0," "," "," "," ");
                     
-                    double x = Transaction._accountBalance+= depo;
+                    double x = transact.AccountBalance+= depo;
                     double balance = x;
                      long withdraw = 0;
                      long airtime = 0;
@@ -694,7 +696,7 @@ public void LogInManagingDirector()
                      var check = cus.GetCustomer(acc);
                      if(check != null)
                      {
-                        if(check._pin == pin1)
+                        if(check.Pin == pin1)
                         {
                         _iTransactionManager.CreateDeposit(balance,withdraw,depo,airtime,transfer,acc,time,refNum,pin1);
                         }
@@ -738,7 +740,8 @@ public void LogInManagingDirector()
                             Console.Write("\tEnter four secrete digit Pin: ");
                             pin1 = Console.ReadLine();
                         }while(pin1.Length != 4 );
-                    double i = Transaction._accountBalance-=airtime;
+                        var transact = new Transaction(0,0,0,0,0," "," "," "," ");
+                    double i = transact.AccountBalance-=airtime;
                     double balance = i;
                      long withdraw = 0;
                      long depo = 0;
@@ -749,7 +752,7 @@ public void LogInManagingDirector()
                      var check = cus.GetCustomer(acc);
                      if(check != null)
                      {
-                        if(check._pin == pin1)
+                        if(check.Pin == pin1)
                         {
                              _iTransactionManager.CreateAirtime(balance,withdraw,depo,airtime,transfer,acc,time,refNum,pin1);
 
@@ -800,8 +803,9 @@ public void LogInManagingDirector()
                             Console.Write("\tEnter four secrete digit Pin: ");
                             pin1 = Console.ReadLine();
                         }while(pin1.Length != 4 );
+                        var transact = new Transaction(0,0,0,0,0," "," "," "," ");
                     
-                    double x = Transaction._accountBalance-= transfer;
+                    double x = transact.AccountBalance-= transfer;
                     double balance = x;
                      long withdraw = 0;
                      long airtime = 0;
@@ -814,7 +818,7 @@ public void LogInManagingDirector()
                      var check = cus.GetCustomer(acc);
                      if(check != null)
                      {
-                        if(check._pin == pin1)
+                        if(check.Pin == pin1)
                         {
                         _iTransactionManager.Transfer(balance,withdraw,depo,airtime,transfer,acc,acc1,time,refNum,pin1);
                         }
@@ -827,11 +831,7 @@ public void LogInManagingDirector()
                      else
                      {
                         System.Console.WriteLine("Not recognize");
-                     }
-
-                     
-
-                       
+                     }       
 
 
                 }
@@ -847,9 +847,10 @@ public void LogInManagingDirector()
                         string acc = Console.ReadLine();
                         var tra = _iTransactionManager.GetTransaction(refNum);
                         var cus = new Customer(" "," "," "," "," "," "," "," "," "," ",0);
+                        var transact = new Transaction(0,0,0,0,0," "," "," "," ");
                         if(tra != null)
                         {
-                            System.Console.WriteLine($"\nAccount Number= {acc}\tAccoun Balance= {Transaction._accountBalance}\tWithdrawal Amount= {Transaction._withdrawalAmount}\tDeposit Amoun= {Transaction._depositAmount}\tAirtime Amount= {Transaction._airtimeAmount}\tRef num = {Transaction._dateTime}\tTransfer= {Transaction._transferAmount}");
+                            System.Console.WriteLine($"\nAccount Number= {acc}\tAccoun Balance= {transact.AccountBalance}\tWithdrawal Amount= {transact.WithdrawalAmount}\tDeposit Amoun= {transact.DepositAmount}\tAirtime Amount= {transact.AirtimeAmount}\tRef num = {transact.DateTime}\tTransfer= {transact.TransferAmount}");
                         }
                     }
 

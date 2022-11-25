@@ -4,15 +4,26 @@ using LegitBankApp.Interfaces;
 using LegitBankApp.Model;
 using System.IO;
 using MySql.Data.MySqlClient;
+using System.Linq;
 
 namespace LegitBankApp.Implementations
 {
     public class ManagingDirectorManager : IManagingDirector
     {
-         string conn = "Server=localhost;port=3306;Database=bankapp;Uid=root;Pwd=Adebayo58641999";
-        
-        public void CreateManager(string firstName, string lastName,string age,string phoneNumber)
+        // string conn = "Server=localhost;port=3306;Database=bankapp;Uid=root;Pwd=Adebayo58641999";
+         private readonly ApplicationContext _context;
+
+        public ManagingDirectorManager()
         {
+            _context = new ApplicationContext();
+        }
+        
+        public ManagingDirector CreateManager(ManagingDirector manager)
+        {
+             _context.managingDirector.Add(manager);
+            _context.SaveChanges();
+            return manager;
+            /*
              try
             {
                 
@@ -41,11 +52,14 @@ namespace LegitBankApp.Implementations
             {
                 System.Console.WriteLine(ex.Message);
             }
+            */
             
         }
 
         public ManagingDirector GetManager(string managerId)
         {
+             return _context.managingDirector.SingleOrDefault(a => a.ManagerId == managerId);
+            /*
            ManagingDirector manager = null;
 
             using (var connection = new MySqlConnection(conn))
@@ -70,10 +84,13 @@ namespace LegitBankApp.Implementations
             }
 
             return null;
+            */
         }
 
         public ManagingDirector LoginManager(string managerId)
         {
+             return _context.managingDirector.SingleOrDefault(a => a.ManagerId == managerId);
+            /*
              ManagingDirector manager = null;
             try
             {
@@ -100,12 +117,21 @@ namespace LegitBankApp.Implementations
             }
 
             return null;
+            */
             
             
         }
 
-        public void UpdateManager(string firstName, string lastName,string phoneNumber,string managerId)
+        public ManagingDirector UpdateManager(string managerId,ManagingDirector manager)
         {
+             var managerInfo =  _context.managingDirector.SingleOrDefault(a => a.ManagerId == managerId);
+             managerInfo.FirstName = manager.FirstName ?? managerInfo.FirstName;
+             managerInfo.LastName = manager.LastName ?? managerInfo.LastName;
+             managerInfo.Age = manager.Age ?? managerInfo.Age;
+             managerInfo.PhoneNumber = manager.PhoneNumber ?? managerInfo.PhoneNumber;
+            _context.SaveChanges();
+            return manager;
+            /*
             var manger = GetManager(managerId);
             if(manger != null)
             {
@@ -140,6 +166,7 @@ namespace LegitBankApp.Implementations
             {
                 System.Console.WriteLine("wrong input");
             }
+            */
         }
     }
 }

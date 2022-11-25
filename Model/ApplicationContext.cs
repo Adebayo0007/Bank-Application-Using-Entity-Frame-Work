@@ -7,7 +7,7 @@ namespace LegitBankApp.Model
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL("Server=localhost;port=3306;Database=bankapplication;Uid=root;Pwd=Adebayo58641999");
+            optionsBuilder.UseMySQL("Server=localhost;port=3306;Database=Legitbankapp;Uid=root;Pwd=Adebayo58641999");
 
         }
         public DbSet<Admin> Admin {get; set;}

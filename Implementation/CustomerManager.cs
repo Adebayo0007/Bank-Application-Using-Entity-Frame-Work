@@ -4,16 +4,27 @@ using LegitBankApp.Interfaces;
 using LegitBankApp.Model;
 using System.IO;
 using MySql.Data.MySqlClient;
+using System.Linq;
 
 namespace LegitBankApp.Implementations
 {
     public class CustomerManager : ICustomerManager
     {
-         string conn = "Server=localhost;port=3306;Database=bankapp;Uid=root;Pwd=Adebayo58641999";
+         //string conn = "Server=localhost;port=3306;Database=bankapp;Uid=root;Pwd=Adebayo58641999";
+         private readonly ApplicationContext _context;
+
+        public CustomerManager()
+        {
+            _context = new ApplicationContext();
+        }
         
 
-        public void CreateCustomer(string firstName, string lastName, string age, string email, string password, string phoneNumber, string accountNumber, string gender, string pin, string accountType)
+        public Customer CreateCustomer(Customer customer)
         {
+             _context.Customer.Add(customer);
+            _context.SaveChanges();
+            return customer;
+            /*
             try
             {
                 
@@ -39,12 +50,24 @@ namespace LegitBankApp.Implementations
             {
                 System.Console.WriteLine(ex.Message);
             }
+            */
             
             
         }
 
         public void DeleteCustomer(string accountNumber)
         {
+
+            var customer = _context.Customer.SingleOrDefault(a => a.AccountNumber == accountNumber);
+            _context.Customer.Remove(customer);
+            if(customer != null)
+            {
+            System.Console.WriteLine($"\n\t{customer.FirstName} {customer.LastName} Successfully deleted. ");
+            _context.SaveChanges();
+
+            }
+
+            /*
             try
                 {
                     using (var connection = new MySqlConnection(conn))
@@ -67,10 +90,28 @@ namespace LegitBankApp.Implementations
                 {
                     System.Console.WriteLine(ex.Message);
                 }
+                */
             }
            
-        public void UpdateCustomer(string firstName, string lastName, string age, string email, string password, string phoneNumber, string address, string pin, string accountType, string accountNumber)
+        public Customer UpdateCustomer(string accountNumber,Customer customer)
         {
+
+            var customerInfo =  _context.Customer.SingleOrDefault(a => a.AccountNumber == accountNumber);
+            customerInfo.FirstName = customer.FirstName ?? customerInfo.FirstName;
+            customerInfo.LastName = customer.LastName ?? customerInfo.LastName;
+            customerInfo.Age = customer.Age ?? customerInfo.Age;
+            customerInfo.Email = customer.Email ?? customerInfo.Email;
+            customerInfo.Password = customer.Password ?? customerInfo.Password;
+            customerInfo.Address = customer.Address ?? customerInfo.Address;
+            customerInfo.Gender = customer.Gender ?? customerInfo.Gender;
+            customerInfo.AccountType = customer.AccountType ?? customerInfo.AccountType;
+            customerInfo.Pin = customer.Pin ?? customerInfo.Pin;
+            customerInfo.PhoneNumber = customer.PhoneNumber ?? customerInfo.PhoneNumber;
+            _context.SaveChanges();
+            return customer;
+
+
+            /*
            var customer2 = GetCustomer(accountNumber);
             if(customer2 != null)
             {
@@ -106,12 +147,15 @@ namespace LegitBankApp.Implementations
             {
                 System.Console.WriteLine("Not recognized");
             }
+            */
 
 
         }
 
         public Customer GetCustomer(string accountNumber)
         {
+              return _context.Customer.SingleOrDefault(a => a.AccountNumber== accountNumber);
+            /*
             Customer custom = null;
 
             using (var connection = new MySqlConnection(conn))
@@ -134,11 +178,14 @@ namespace LegitBankApp.Implementations
             }
 
             return null;
+            */
 
         }
 
         public Customer Login(string email, string password)
         {
+            return _context.Customer.SingleOrDefault(a => a.Email== email && a.Password == password);
+            /*
             Customer custom = null;
             try
             {
@@ -160,12 +207,15 @@ namespace LegitBankApp.Implementations
                 System.Console.WriteLine(ex.Message);
             }
             return custom is not null && custom.Email.ToUpper() == email.ToUpper() && custom.Password == password ? custom : null;
+            */
         }
 
 
-         public void GetAllCustomerFronSql()
+         public IList<Customer> GetAllCustomer()
         {
-            
+             return _context.Customer.ToList();
+
+            /*
 
             using (var connection = new MySqlConnection(conn))
             {
@@ -181,19 +231,9 @@ namespace LegitBankApp.Implementations
                     }
                 }
             }
+            */
             
         }
-
-
-
-
-
-
-
-
-
-
-
        
     }
 }

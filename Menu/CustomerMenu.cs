@@ -76,36 +76,64 @@ namespace LegitBankApp.Menu
             if(ch ==1)
             {
                 accType = "Student account";
-                _iCustomerManager.CreateCustomer(firstName,lastName,age,email,passWord,number,customer.AccountNumber,gender,pin,accType);
+                var cus = new Customer(firstName,lastName,age,email,passWord,number,address,gender,pin,accType,0);
+                if(cus != null)
+                {
+                    System.Console.WriteLine($"\n\t<<<<<Congratulation {firstName} {lastName} !>>>>>\n\tRegistration Completed");
+                _iCustomerManager.CreateCustomer(cus);
+               
+                }
+
+
             }
 
              if(ch ==2)
             {
                 accType = "Savings account";
-                _iCustomerManager.CreateCustomer(firstName,lastName,age,email,passWord,number,customer.AccountNumber,gender,pin,accType);
+                var cus = new Customer(firstName,lastName,age,email,passWord,number,address,gender,pin,accType,0);
+                if(cus != null)
+                {
+                    System.Console.WriteLine($"\n\t<<<<<Congratulation {firstName} {lastName} !>>>>>\n\tRegistration Completed");
+                _iCustomerManager.CreateCustomer(cus);
+               
+                }
             }
 
              if(ch ==3)
             {
                 accType = "Current account";
-                _iCustomerManager.CreateCustomer(firstName,lastName,age,email,passWord,number,customer.AccountNumber,gender,pin,accType);
+                 var cus = new Customer(firstName,lastName,age,email,passWord,number,address,gender,pin,accType,0);
+                if(cus != null)
+                {
+                    System.Console.WriteLine($"\n\t<<<<<Congratulation {firstName} {lastName} !>>>>>\n\tRegistration Completed");
+                _iCustomerManager.CreateCustomer(cus);
+               
+                }
             }
 
              if(ch ==4)
             {
                 accType = "Business account";
-                _iCustomerManager.CreateCustomer(firstName,lastName,age,email,passWord,number,customer.AccountNumber,gender,pin,accType);
+                var cus = new Customer(firstName,lastName,age,email,passWord,number,address,gender,pin,accType,0);
+                if(cus != null)
+                {
+                    System.Console.WriteLine($"\n\t<<<<<Congratulation {firstName} {lastName} !>>>>>\n\tRegistration Completed");
+                _iCustomerManager.CreateCustomer(cus);
+               
+                }
             }
 
              if(ch ==5)
             {
                 accType = "Joint account";
-                _iCustomerManager.CreateCustomer(firstName,lastName,age,email,passWord,number,customer.AccountNumber,gender,pin,accType);
+                var cus = new Customer(firstName,lastName,age,email,passWord,number,address,gender,pin,accType,0);
+                if(cus != null)
+                {
+                    System.Console.WriteLine($"\n\t<<<<<Congratulation {firstName} {lastName} !>>>>>\n\tRegistration Completed");
+                _iCustomerManager.CreateCustomer(cus);
+               
+                }
             }
-
-            Console.Write($"\n\t<<<<<-Congratulations !->>>>>\n\t<<<<<-Registration Completed->>>>> ");
-
-            
             
             System.Console.WriteLine("\n\tEnter 1 to Login\n\tEnter 0 to opt out");
             int x;
@@ -137,7 +165,7 @@ namespace LegitBankApp.Menu
  ################################################################################");
             Console.WriteLine("\tWelcome !.\n\tEnter your E-mail and Password to login ");
             Console.Write("\tEnter your E-mail: ");
-            var mail = Console.ReadLine();
+            var mail = Console.ReadLine().ToUpper();
             Console.Write("\tEnter your password: ");
             var pass = Console.ReadLine();
             var customer = _iCustomerManager.Login(mail,pass);
@@ -150,7 +178,7 @@ namespace LegitBankApp.Menu
                 switch(input)
                 {
                     case 0:
-                    System.Console.WriteLine("Closong Application...");
+                    System.Console.WriteLine("Closing Application...");
                     break;
 
                     case 1:

@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
 namespace LegitBankApp.Model
 {
     public class Admin : User
     {
+        [Key]
         public string StaffID {get; set;}
-        public int Id {get; set;}
+        
     
         public Admin(string firstName,string lastName,string age,string email,string password,string phoneNumber,string address,string gender): base (firstName,lastName,age,email,password,phoneNumber,address,gender)       
          {

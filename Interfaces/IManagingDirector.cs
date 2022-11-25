@@ -4,8 +4,8 @@ namespace LegitBankApp.Interfaces
 {
     public interface IManagingDirector
     {
-        void CreateManager(string firstName,string lastName,string age,string phoneNumber);
-        void UpdateManager (string firstName, string lastName ,string phoneNumber,string managerId);
+        ManagingDirector CreateManager(ManagingDirector manager);
+        ManagingDirector UpdateManager (string managerId,ManagingDirector manager);
         ManagingDirector GetManager (string managerId);
         ManagingDirector LoginManager(string managerId);
 

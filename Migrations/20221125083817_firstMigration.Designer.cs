@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LegitBankApp.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20221123055420_forthMigration")]
-    partial class forthMigration
+    [Migration("20221125083817_firstMigration")]
+    partial class firstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,9 +20,8 @@ namespace LegitBankApp.Migrations
 
             modelBuilder.Entity("LegitBankApp.Model.Admin", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("StaffID")
+                        .HasColumnType("varchar(767)");
 
                     b.Property<string>("Address")
                         .HasColumnType("text");
@@ -48,25 +47,18 @@ namespace LegitBankApp.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
 
-                    b.Property<string>("StaffID")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
+                    b.HasKey("StaffID");
 
                     b.ToTable("Admin");
                 });
 
             modelBuilder.Entity("LegitBankApp.Model.Customer", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("AccountNumber")
+                        .HasColumnType("varchar(767)");
 
                     b.Property<double>("AccountBalance")
                         .HasColumnType("double");
-
-                    b.Property<string>("AccountNumber")
-                        .HasColumnType("text");
 
                     b.Property<string>("AccountType")
                         .HasColumnType("text");
@@ -76,9 +68,6 @@ namespace LegitBankApp.Migrations
 
                     b.Property<string>("Age")
                         .HasColumnType("text");
-
-                    b.Property<int>("CustomerRegNum")
-                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .HasColumnType("text");
@@ -101,16 +90,15 @@ namespace LegitBankApp.Migrations
                     b.Property<string>("Pin")
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("AccountNumber");
 
                     b.ToTable("Customer");
                 });
 
             modelBuilder.Entity("LegitBankApp.Model.ManagingDirector", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("ManagerId")
+                        .HasColumnType("varchar(767)");
 
                     b.Property<string>("Age")
                         .HasColumnType("text");
@@ -121,28 +109,21 @@ namespace LegitBankApp.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("text");
 
-                    b.Property<string>("ManagerId")
-                        .HasColumnType("text");
-
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("ManagerId");
 
                     b.ToTable("managingDirector");
                 });
 
             modelBuilder.Entity("LegitBankApp.Transaction", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("AccountNumber")
+                        .HasColumnType("varchar(767)");
 
                     b.Property<double>("AccountBalance")
                         .HasColumnType("double");
-
-                    b.Property<string>("AccountNumber")
-                        .HasColumnType("text");
 
                     b.Property<double>("AirtimeAmount")
                         .HasColumnType("double");
@@ -165,7 +146,7 @@ namespace LegitBankApp.Migrations
                     b.Property<double>("WithdrawalAmount")
                         .HasColumnType("double");
 
-                    b.HasKey("Id");
+                    b.HasKey("AccountNumber");
 
                     b.ToTable("Transaction");
                 });

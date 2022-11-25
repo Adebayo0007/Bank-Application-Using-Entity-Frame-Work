@@ -1,14 +1,17 @@
 using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace LegitBankApp.Model
 {
     public class ManagingDirector 
     {
-        public int Id {get; set;}
+        [Key]
+         public string ManagerId   {get; set;}
         public string FirstName {get; set;}
         public string LastName {get; set;}
         public string Age     {get; set;}
         public string PhoneNumber  {get; set;}
-        public string ManagerId   {get; set;}
+       
 
         public ManagingDirector(string firstName,string lastName,string age,string phoneNumber)
         {

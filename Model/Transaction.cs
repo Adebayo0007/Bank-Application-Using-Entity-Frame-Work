@@ -1,20 +1,22 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using LegitBankApp.Model;
 namespace LegitBankApp
 {
     public class Transaction 
     {
-        public int Id {get; set;}
+        [Key]
+         public  string AccountNumber    {get; set;}
         public  double AccountBalance   {set; get;}
         public  double WithdrawalAmount {get; set;}
         public  double DepositAmount    {get; set;}
         public  double AirtimeAmount    {get; set;}
-        public  string AccountNumber    {get; set;}
+         public double TransferAmount {get; set;}
+        public string Pin             {get; set;}
         public  string DateTime         {get; set;}
-        public double TransferAmount {get; set;}
-        public  string RefNum                 {get; set;}
-         public string Pin             {get; set;}
+        public  string RefNum             {get; set;}
+       
         
         public Transaction(double accountBalance,double withdrawalAmount,double depositAmount,double airtimeAmount,double transferAmount,string accountNumber,string dateTime,string refNum,string pin) 
          {

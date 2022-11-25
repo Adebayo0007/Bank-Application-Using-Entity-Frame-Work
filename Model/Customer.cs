@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
 namespace LegitBankApp.Model
 {
     public class Customer : User 
     {
-        public int Id {get; set;}
+       
+        [Key]
         public string AccountNumber {get; set;}
         public string Pin           {get; set;}
         public string AccountType   {get; set;}
-        public int CustomerRegNum   {get; set;}
         public double AccountBalance {get; set;}
         
 
@@ -16,7 +18,7 @@ namespace LegitBankApp.Model
         {
             this.AccountNumber = GenerateCustomerAcountNumber();
             this.Pin = pin;
-            this.AccountType = accountType; 
+            this.PhoneNumber = phoneNumber; 
             this.FirstName = firstName;
             this.LastName = lastName;
             this.Age = age;
@@ -34,7 +36,6 @@ namespace LegitBankApp.Model
             {
                 Random random = new Random();
                 Random rand = new Random();
-                string preTest =CustomerRegNum.ToString();
                 string customerAccountNumber = $"{random.Next(300,700).ToString()}{random.Next(100, 900).ToString()}{rand.Next(100,400).ToString()}0";
                 return customerAccountNumber;
 

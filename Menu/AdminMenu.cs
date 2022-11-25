@@ -14,7 +14,7 @@ namespace LegitBankApp.Menu
         IManagingDirector _managingDirector        = new ManagingDirectorManager();
         private int _choice;
 
-        string conn = "Server=localhost;port=3306;Database=bankapp;Uid=root;Pwd=Adebayo58641999";
+        //string conn = "Server=localhost;port=3306;Database=bankapp;Uid=root;Pwd=Adebayo58641999";
 
 
 
@@ -27,7 +27,7 @@ namespace LegitBankApp.Menu
 
 public void ManagerMenu()
 {
-    System.Console.WriteLine("\n\tEnter 1 to Register\n\tEnter 2 to Login\n\tEnter 3 to see all Admins");
+    System.Console.WriteLine("\n\tEnter 1 to Register\n\tEnter 2 to Login\n\tEnter 3 to get Manager\n\tEnter 4 to see all Admins");
     int choice;
     int.TryParse(Console.ReadLine(), out choice);
     switch(choice)
@@ -40,9 +40,50 @@ public void ManagerMenu()
         LogInManagingDirector();
         break;
 
-        case 3:
-        var admin = new AdminManager();
-        admin.GetAllAdminFronSql();
+         case 3:
+         string security = "ZenithManager0007";
+         System.Console.WriteLine("Enter the Company's Security pass");
+         string pass = Console.ReadLine();
+         if(pass == security)
+         {
+            System.Console.WriteLine("\n\tEnter Manager's Id");
+            string id = Console.ReadLine();
+            var manager = new ManagingDirectorManager();
+            var check = manager.GetManager(id);
+            if(check != null)
+            {
+                System.Console.WriteLine($"First Name: {check.FirstName}\tLast Name: {check.LastName}\tAge: {check.Age}\t\tNumber: {check.PhoneNumber}\tId: {check.ManagerId}");
+            }
+
+         }
+         else
+         {
+            System.Console.WriteLine("Go to the Company for the pass");
+         }
+        break;
+
+        case 4:
+        string security1 = "ZenithManager0007";
+         System.Console.WriteLine("Enter the Company's Security pass");
+         string pass1 = Console.ReadLine();
+         if(pass1 == security1)
+         {
+            var admin = new AdminManager();
+            var adm=admin.GetAllAdmin();
+            if(adm != null)
+            {
+                foreach(var data in adm)
+                {
+                    System.Console.WriteLine($"StaffId\t\t\tFirstName\tLastName\tAge\tEmail\t\tPassword\tPhoneNumber\t\tAddress\t\tGender");
+                    System.Console.WriteLine("_____________________________________________________________________________________________________________________________________________________");
+                    System.Console.WriteLine($"\n{data.StaffID}\t{data.FirstName}\t\t{data.LastName}\t\t{data.Age}\t{data.Email}\t{data.Password}\t\t{data.PhoneNumber}\t\t{data.Address}\t{data.Gender}");
+                }
+            }
+          }
+         else
+         {
+            System.Console.WriteLine("Go to the Company for the pass");
+         }
         break;
     }
 
@@ -77,7 +118,12 @@ public void CreateManagingDirector()
                             System.Console.WriteLine("Enter admin Phone number");
                             phone = Console.ReadLine();
                             }while(phone.Length != 11);
-                            _managingDirector.CreateManager(first,last,age,phone);
+                            var manager = new ManagingDirector(first,last,age,phone);
+                            if(manager != null)
+                            {
+                            _managingDirector.CreateManager(manager);
+                            System.Console.WriteLine("\n\t<<<<<Registration successfully>>>>>");
+                            }
                 }
                 else
                 {
@@ -101,7 +147,14 @@ public void UpdateManger()
                             }while(phone.Length != 11);
                             System.Console.WriteLine("Enter your Id");
                             string id = Console.ReadLine();
-    _managingDirector.UpdateManager(first,last,phone,id);
+                            System.Console.WriteLine("Enter your age");
+                            string age = Console.ReadLine();
+                            var manager = new ManagingDirector(first,last,age,phone);
+                            if(manager != null)
+                            {
+                                System.Console.WriteLine("\n\t<<<<< Update Successful >>>>>");
+                                  _managingDirector.UpdateManager(id,manager);
+                            }
 }
 
 
@@ -303,7 +356,18 @@ public void LogInManagingDirector()
 
                             case 6:
                             var cus = new CustomerManager();
-                            cus.GetAllCustomerFronSql();
+                             var customer = cus.GetAllCustomer();
+                             if(customer != null)
+                             {
+                                foreach(var data in customer)
+                                    {
+                                        System.Console.WriteLine($"AccountNumber\tPin\t\tAccountType\t\tAccountBalance\tFirstName\tLastName\tAge\t\tEmail\t\t\tPassword\t\tPhoneNumber\t\tAddress\t\tGender");
+                                        System.Console.WriteLine("_____________________________________________________________________________________________________________________________________________________________________________________________________________________");
+                                        System.Console.WriteLine($"\n{data.AccountNumber}\t{data.Pin}\t\t{data.AccountType}\t\t{data.AccountBalance}\t\t{data.FirstName}\t\t{data.LastName}\t\t{data.Age}\t\t{data.Email}\t{data.Password}\t\t{data.PhoneNumber}\t{data.Address}\t{data.Gender}");
+                                    }
+
+                             }
+
                             break;
                         }
                     }
@@ -365,6 +429,8 @@ public void LogInManagingDirector()
             var address = Console.ReadLine();
             Console.Write("\tEnter your account number: ");
             var account = Console.ReadLine();
+             Console.Write("\tEnter your gender: ");
+            var gender = Console.ReadLine();
             var customer = new Customer(" "," "," "," "," "," "," "," "," "," ",0);
             string pin;
             string accType;
@@ -379,31 +445,56 @@ public void LogInManagingDirector()
             if(ch ==1)
             {
                 accType = "Student account";
-                _iCustomerManager.UpdateCustomer(firstName,lastName,age,email,passWord,number,address,pin,accType,account);
+                var cus = new Customer(firstName,lastName,age,email,passWord,number,address,gender,pin,accType,0);
+                if(cus != null)
+                {
+                    System.Console.WriteLine($"\n\t<<<<<Congratulation {firstName} {lastName} !>>>>>\n\tUpdate Completed");
+                _iCustomerManager.UpdateCustomer(account, cus);
+                }
             }
 
              if(ch ==2)
             {
                 accType = "Savings account";
-                 _iCustomerManager.UpdateCustomer(firstName,lastName,age,email,passWord,number,address,pin,accType,account);
+               var cus = new Customer(firstName,lastName,age,email,passWord,number,address,gender,pin,accType,0);
+                if(cus != null)
+                {
+                    System.Console.WriteLine($"\n\t<<<<<Congratulation {firstName} {lastName} !>>>>>\n\tUpdate Completed");
+                _iCustomerManager.UpdateCustomer(account, cus);
+                }
             }
 
              if(ch ==3)
             {
                 accType = "Current account";
-                _iCustomerManager.UpdateCustomer(firstName,lastName,age,email,passWord,number,address,pin,accType,account);
+               var cus = new Customer(firstName,lastName,age,email,passWord,number,address,gender,pin,accType,0);
+                if(cus != null)
+                {
+                    System.Console.WriteLine($"\n\t<<<<<Congratulation {firstName} {lastName} !>>>>>\n\tUpdate Completed");
+                _iCustomerManager.UpdateCustomer(account, cus);
+                }
             }
 
              if(ch ==4)
             {
                 accType = "Business account";
-                _iCustomerManager.UpdateCustomer(firstName,lastName,age,email,passWord,number,address,pin,accType,account);
+               var cus = new Customer(firstName,lastName,age,email,passWord,number,address,gender,pin,accType,0);
+                if(cus != null)
+                {
+                    System.Console.WriteLine($"\n\t<<<<<Congratulation {firstName} {lastName} !>>>>>\n\tUpdate Completed");
+                _iCustomerManager.UpdateCustomer(account, cus);
+                }
             }
 
              if(ch ==5)
             {
                 accType = "Joint account";
-                 _iCustomerManager.UpdateCustomer(firstName,lastName,age,email,passWord,number,address,pin,accType,account);
+                var cus = new Customer(firstName,lastName,age,email,passWord,number,address,gender,pin,accType,0);
+                if(cus != null)
+                {
+                    System.Console.WriteLine($"\n\t<<<<<Congratulation {firstName} {lastName} !>>>>>\n\tUpdate Completed");
+                _iCustomerManager.UpdateCustomer(account, cus);
+                }
             }
             
 
@@ -446,7 +537,13 @@ public void LogInManagingDirector()
                             string address = Console.ReadLine();
                             System.Console.WriteLine("Enter admin gender");
                             string gender = Console.ReadLine();
-                            _iAdminManager.CreateAdmin(first,last,age,mail,pass,phone,address,gender);
+                            var admin = new Admin (first,last,age,mail,pass,phone,address,gender);
+                            if(admin != null)
+                            {
+                                _iAdminManager.CreateAdmin(admin);
+                                System.Console.WriteLine($"\n\t<<<<<Your ID number is: {admin.StaffID}>>>>>");
+                                System.Console.WriteLine($"\n\tCongratulation {admin.FirstName} {admin.LastName},registration completed");
+                            }
 
                 }
                 else
@@ -454,6 +551,7 @@ public void LogInManagingDirector()
                     System.Console.WriteLine("Go back to the bank to ask for the pass");
                 }
                 }
+
 
                 public  void DeleteAdmin()
                 {
@@ -579,8 +677,24 @@ public void LogInManagingDirector()
                             string address5 = Console.ReadLine();
                             System.Console.WriteLine("Enter admin Id");
                             string id = Console.ReadLine();
+                             System.Console.WriteLine("Enter your gender");
+                            string gender = Console.ReadLine();
+                            var admin = new Admin(first5,last5,age5,mail5,pass5,phone5,address5,gender);
+                            try
+                            {
+                            if(admin != null)
+                            {
+                                System.Console.WriteLine("Update Successful");
+                             _iAdminManager.UpdateAdmin(id,admin);
 
-                             _iAdminManager.UpdateAdmin(first5,last5,phone5,age5,mail5,pass5,address5,id);
+                            }
+
+                            }
+                            catch(System.Exception ex)
+                            {
+                                System.Console.WriteLine(ex.Message);
+                            }
+
 
                 }
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using MySql.EntityFrameworkCore.Metadata;
 
 namespace LegitBankApp.Migrations
 {
@@ -11,6 +12,7 @@ namespace LegitBankApp.Migrations
                 columns: table => new
                 {
                     StaffID = table.Column<string>(type: "varchar(767)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: true),
                     LastName = table.Column<string>(type: "text", nullable: true),
                     Age = table.Column<string>(type: "text", nullable: true),
@@ -30,6 +32,7 @@ namespace LegitBankApp.Migrations
                 columns: table => new
                 {
                     AccountNumber = table.Column<string>(type: "varchar(767)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Pin = table.Column<string>(type: "text", nullable: true),
                     AccountType = table.Column<string>(type: "text", nullable: true),
                     AccountBalance = table.Column<double>(type: "double", nullable: false),
@@ -52,6 +55,7 @@ namespace LegitBankApp.Migrations
                 columns: table => new
                 {
                     ManagerId = table.Column<string>(type: "varchar(767)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: true),
                     LastName = table.Column<string>(type: "text", nullable: true),
                     Age = table.Column<string>(type: "text", nullable: true),
@@ -66,19 +70,21 @@ namespace LegitBankApp.Migrations
                 name: "Transaction",
                 columns: table => new
                 {
-                    AccountNumber = table.Column<string>(type: "varchar(767)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    RefNum = table.Column<string>(type: "text", nullable: true),
+                    AccountNumber = table.Column<string>(type: "text", nullable: true),
                     AccountBalance = table.Column<double>(type: "double", nullable: false),
                     WithdrawalAmount = table.Column<double>(type: "double", nullable: false),
                     DepositAmount = table.Column<double>(type: "double", nullable: false),
                     AirtimeAmount = table.Column<double>(type: "double", nullable: false),
                     TransferAmount = table.Column<double>(type: "double", nullable: false),
                     Pin = table.Column<string>(type: "text", nullable: true),
-                    DateTime = table.Column<string>(type: "text", nullable: true),
-                    RefNum = table.Column<string>(type: "text", nullable: true)
+                    DateTime = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Transaction", x => x.AccountNumber);
+                    table.PrimaryKey("PK_Transaction", x => x.Id);
                 });
         }
 

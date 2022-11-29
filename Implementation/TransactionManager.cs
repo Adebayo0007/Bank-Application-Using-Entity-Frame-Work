@@ -4,19 +4,45 @@ using LegitBankApp.Interfaces;
 using LegitBankApp.Model;
 using System.IO;
 using MySql.Data.MySqlClient;
+using System.Linq;
 
 namespace LegitBankApp.Implementations
 {
     public class TransactionManager : ITransactionManager
     {
 
-        string conn = "Server=localhost;port=3306;Database=bankapp;Uid=root;Pwd=Adebayo58641999";
+       // string conn = "Server=localhost;port=3306;Database=bankapp;Uid=root;Pwd=Adebayo58641999";
 
+        private readonly ApplicationContext _context;
 
-
-
-        public void CreateAirtime(double accountBalance, double withdrawalAmount, double depositAmount, double airtimeAmount,double transferAmount,string accountnumber2, string dateTime, string refNum, string pin)
+        public TransactionManager()
         {
+            _context = new ApplicationContext();
+        }
+
+
+
+
+        public Transaction CreateAirtime(Transaction transaction)
+        {
+
+             var customer = new CustomerManager();
+            var test = customer.GetCustomer(transaction.AccountNumber);
+         
+                          test.AccountBalance -= transaction.AirtimeAmount;
+                          _context.Customer.Update(test);
+                                transaction.AccountBalance = test.AccountBalance;
+                                 _context.Transaction.Add(transaction);
+                                  _context.SaveChanges(); 
+                                   return transaction; 
+                
+
+ 
+           
+                
+           
+
+            /*
             var customer = new CustomerManager();
             var test = customer.GetCustomer(accountnumber2);
             if (test.AccountType == "Student account")
@@ -141,13 +167,27 @@ namespace LegitBankApp.Implementations
                     System.Console.WriteLine("Low Balance");
                 }
             }
+            */
 
         }
 
 
 
-        public void CreateDeposit(double accountBalance, double withdrawalAmount, double depositAmount, double airtimeAmount,double transferAmount,string accountnumber2, string dateTime, string refNum, string pin)
+        public Transaction CreateDeposit(Transaction transaction)
         {
+             var customer = new CustomerManager();
+            var test = customer.GetCustomer(transaction.AccountNumber);
+                   
+                          test.AccountBalance += transaction.DepositAmount;
+                           _context.Customer.Update(test);
+                                transaction.AccountBalance = test.AccountBalance;
+                                test.AccountBalance = transaction.AccountBalance;
+                                 _context.Transaction.Add(transaction);
+                                  _context.SaveChanges();
+                                   return transaction;   
+           
+
+            /*
             var customer = new CustomerManager();
             var test = customer.GetCustomer(accountnumber2);
 
@@ -194,6 +234,7 @@ namespace LegitBankApp.Implementations
             {
                 System.Console.WriteLine(ex.Message);
             }
+            */
 
 
 
@@ -202,8 +243,29 @@ namespace LegitBankApp.Implementations
 
 
 
-        public void CreateWithdrawal(double accountBalance, double withdrawalAmount, double depositAmount, double airtimeAmount,double transferAmount,string accountnumber2, string dateTime, string refNum, string pin)
+        public Transaction CreateWithdrawal(Transaction transaction)
         {
+
+             var customer = new CustomerManager();
+            var test = customer.GetCustomer(transaction.AccountNumber);
+            double charges;
+        
+                          if(transaction.WithdrawalAmount >= 2000)
+                                        {
+                                            charges = 0.005*transaction.WithdrawalAmount;
+                                            test.AccountBalance -= charges;
+                                        }
+                          test.AccountBalance -= transaction.WithdrawalAmount;
+                           _context.Customer.Update(test);
+                                transaction.AccountBalance = test.AccountBalance; 
+                                 _context.Transaction.Add(transaction);
+                                  _context.SaveChanges(); 
+                                   return transaction;                  
+           
+
+           
+
+            /*
             var customer = new CustomerManager();
             var test = customer.GetCustomer(accountnumber2);
             if (test.AccountType == "Student account")
@@ -337,12 +399,46 @@ namespace LegitBankApp.Implementations
 
 
             }
+            */
         }
 
 
 
-        public void Transfer (double accountBalance,double withdrawalAmount,double depositAmount,double airtimeAmount,double transferAmount,string senderAccountnumber,string recieverAccountnumber,string dateTime,string refNum,string pin)
+        public Transaction Transfer(string recieverAccountNumber,Transaction transaction)
         {
+             var customer = new CustomerManager();
+            var test = customer.GetCustomer(transaction.AccountNumber);
+            var test1 = customer.GetCustomer(recieverAccountNumber);
+            double charges;
+            if(test != null && test1 != null)
+            {
+                if(transaction.TransferAmount >= 2000)
+                {
+                        charges = 0.005*transaction.TransferAmount;
+                        test.AccountBalance -= charges;
+                }
+                test.AccountBalance -= transaction.TransferAmount;
+                transaction.AccountBalance = test.AccountBalance;
+                test1.AccountBalance += transaction.TransferAmount;
+                _context.Customer.Update(test);
+                _context.Customer.Update(test1);
+                _context.Transaction.Add(transaction);
+                _context.SaveChanges();
+                                   
+            }
+            else 
+            {
+                System.Console.WriteLine("Confirm your Input");
+            }
+             return transaction;  
+               
+
+ 
+            
+             
+           
+
+            /*
 
              var customer = new CustomerManager();
             var test = customer.GetCustomer(senderAccountnumber);
@@ -478,6 +574,7 @@ namespace LegitBankApp.Implementations
                     System.Console.WriteLine("Low Balance");
                 }
             }
+            */
 
         }
 
@@ -487,6 +584,27 @@ namespace LegitBankApp.Implementations
 
         public void DeleteTransaction(string refNum)
         {
+             var transaction = _context.Transaction.SingleOrDefault(a => a.RefNum == refNum);
+                var customer = new CustomerManager();
+               var up = customer.GetCustomer(transaction.AccountNumber);
+               up.AccountBalance+=transaction.AirtimeAmount;
+                up.AccountBalance-=transaction.DepositAmount;
+                up.AccountBalance+=transaction.WithdrawalAmount;
+                //up.AccountBalance+=transaction.TransferAmount;
+                _context.Customer.Update(up);
+            _context.Transaction.Remove(transaction);
+            if(transaction != null)
+            {
+            System.Console.WriteLine($"\n\t{transaction.RefNum} Successfully deleted. ");
+            _context.SaveChanges();
+
+            }
+            else
+            {
+                System.Console.WriteLine("User not fount");
+            }
+            /*
+
             var transaction = GetTransaction(refNum);
             if (transaction != null)
             {
@@ -516,12 +634,17 @@ namespace LegitBankApp.Implementations
             {
                 Console.WriteLine("User not found.");
             }
+            */
         }
 
 
 
         public Transaction GetTransaction(string refNum)
         {
+             return _context.Transaction.SingleOrDefault(a => a.RefNum== refNum);
+
+            
+            /*
             Transaction transaction = null;
 
             using (var connection = new MySqlConnection(conn))
@@ -544,12 +667,17 @@ namespace LegitBankApp.Implementations
             }
 
             return null;
+            */
 
         }
 
 
-        public Transaction GetTransactionFronSql()
+        public IList<Transaction> GetAllTransaction()
         {
+             return _context.Transaction.ToList();
+
+            /*
+            
             Transaction transaction = null;
 
             using (var connection = new MySqlConnection(conn))
@@ -572,6 +700,7 @@ namespace LegitBankApp.Implementations
             }
 
             return null;
+            */
 
         }
 

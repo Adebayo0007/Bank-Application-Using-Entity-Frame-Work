@@ -357,13 +357,14 @@ public void LogInManagingDirector()
                             case 6:
                             var cus = new CustomerManager();
                              var customer = cus.GetAllCustomer();
+                             System.Console.WriteLine($"AccountNumber\tPin\t\tAccountType\t\tAccountBalance\tFirstName\tLastName\tAge\t\tEmail\t\t\tPassword\t\tPhoneNumber\t\tAddress\tGender");
+                                        System.Console.WriteLine("_____________________________________________________________________________________________________________________________________________________________________________________________________________________");
                              if(customer != null)
                              {
                                 foreach(var data in customer)
                                     {
-                                        System.Console.WriteLine($"AccountNumber\tPin\t\tAccountType\t\tAccountBalance\tFirstName\tLastName\tAge\t\tEmail\t\t\tPassword\t\tPhoneNumber\t\tAddress\t\tGender");
-                                        System.Console.WriteLine("_____________________________________________________________________________________________________________________________________________________________________________________________________________________");
-                                        System.Console.WriteLine($"\n{data.AccountNumber}\t{data.Pin}\t\t{data.AccountType}\t\t{data.AccountBalance}\t\t{data.FirstName}\t\t{data.LastName}\t\t{data.Age}\t\t{data.Email}\t{data.Password}\t\t{data.PhoneNumber}\t{data.Address}\t{data.Gender}");
+                                        
+                                        System.Console.WriteLine($"\n{data.AccountNumber}\t{data.Pin}\t\t{data.AccountType}\t\t{data.AccountBalance}\t\t{data.FirstName}\t\t{data.LastName}\t\t{data.Age}\t\t{data.Email}\t{data.Password}\t\t{data.PhoneNumber}\t{data.Address}  {data.Gender}");
                                     }
 
                              }
@@ -726,7 +727,7 @@ public void LogInManagingDirector()
                      string acc;
                      do
                      {
-                     System.Console.WriteLine("\tEnter your account number");
+                     System.Console.Write("\tEnter your account number: ");
                      acc = Console.ReadLine();
                      }while(acc.Length != 10);
                      do
@@ -735,8 +736,8 @@ public void LogInManagingDirector()
                             pin1 = Console.ReadLine();
                         }while(pin1.Length != 4 );
                         var transact = new Transaction(0,0,0,0,0," "," "," "," ");
-                    double y = transact.AccountBalance-=withdraw;
-                    double balance = y;
+                   // double y = transact.AccountBalance-=withdraw;
+                    //double balance =0;
                      long depo = 0;
                      long airtime = 0;
                      long transfer = 0;
@@ -745,29 +746,81 @@ public void LogInManagingDirector()
 
                      var cus = new CustomerManager();
                      var check = cus.GetCustomer(acc);
-                     if(check != null)
-                     {
-                        if(check.Pin == pin1)
-                        {
 
-                        _iTransactionManager.CreateWithdrawal(balance,withdraw,depo,airtime,transfer,acc,time,refNum,pin1);
+                     var tra = new Transaction (check.AccountBalance,withdraw,depo,airtime,transfer,acc,time,refNum,pin1);
+                            if(check != null)
+                            {
+                                if(tra.Pin == check.Pin)
+                                { 
+                                    double charges;
+                                    if(check.AccountType == "Student account")
+                                    {
+                                        if(check.AccountBalance <= 200000)
+                                        {
+                                            if(tra.WithdrawalAmount <= check.AccountBalance)
+                                            {
+                                                if(tra.WithdrawalAmount >= 2000)
+                                                                {
+                                                                    charges = 0.005*tra.WithdrawalAmount;
+                                                                    System.Console.WriteLine($"Your charges is: # {charges}");
+                                                                }
+                                                                var with = _iTransactionManager.CreateWithdrawal(tra);
+                                                                 System.Console.WriteLine($"Transaction successful ! ");
+                                                                    System.Console.WriteLine($"\n\tTnx: Debit\n\tAc: {check.AccountNumber[0]}{check.AccountNumber[1]}*****{check.AccountNumber[7]}{check.AccountNumber[8]}*\n\tAmt: NGN {with.WithdrawalAmount}\n\tFrom: {check.AccountNumber}\n\tYour balance is: # {with.AccountBalance}\n\tDate: {time}");
+                                                                 
+                                            }
+                                            else
+                                            {
+                                                System.Console.WriteLine("\n\tLow Balance,try to deposit");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            System.Console.WriteLine("\n\tTry to Upgrade your account");
+                                        }
+                                        
+                                    }
 
-                        }
-                        else
-                        {
-                            System.Console.WriteLine("Wrong pin");
-                        }
-                         
-                     }
-                     else
-                     {
-                        System.Console.WriteLine("Not recognize");
-                     }
 
-                     
-                     
 
-                       
+
+                                        else
+                                        {
+                                            if(tra.WithdrawalAmount < check.AccountBalance && check.AccountBalance >= 500)
+                                            {
+                                               
+                                                if(tra.WithdrawalAmount < check.AccountBalance)
+                                                {
+                                                    if(tra.WithdrawalAmount >= 2000)
+                                                                {
+                                                                    charges = 0.005*tra.WithdrawalAmount;
+                                                                    System.Console.WriteLine($"Your charges is: # {charges}");
+                                                                }
+                                                                var with = _iTransactionManager.CreateWithdrawal(tra);
+                                                                 System.Console.WriteLine($"Transaction successful ! ");
+                                                                    System.Console.WriteLine($"\n\tTnx: Debit\n\tAc: {check.AccountNumber[0]}{check.AccountNumber[1]}*****{check.AccountNumber[7]}{check.AccountNumber[8]}*\n\tAmt: NGN {with.WithdrawalAmount}\n\tFrom: {check.AccountNumber}\n\tYour balance is: # {with.AccountBalance}\n\tDate: {time}");
+                                                                    
+                                                }
+                                            }
+                                             else
+                                            {
+                                                System.Console.WriteLine("\n\tLow Balance,try to deposit");
+                                            }
+                                        }
+ 
+                                }
+                                else
+                                {
+                                    System.Console.WriteLine("\n\tWrong Pin");
+                                }
+
+                                
+                                
+                            }
+                            else
+                            {
+                                System.Console.WriteLine("\n\tNot Recognized");
+                            }
 
 
 
@@ -796,9 +849,7 @@ public void LogInManagingDirector()
                             pin1 = Console.ReadLine();
                         }while(pin1.Length != 4 );
                         var transact = new Transaction(0,0,0,0,0," "," "," "," ");
-                    
-                    double x = transact.AccountBalance+= depo;
-                    double balance = x;
+                     double balance =0;
                      long withdraw = 0;
                      long airtime = 0;
                      long transfer=0;
@@ -812,17 +863,20 @@ public void LogInManagingDirector()
                      {
                         if(check.Pin == pin1)
                         {
-                        _iTransactionManager.CreateDeposit(balance,withdraw,depo,airtime,transfer,acc,time,refNum,pin1);
+                            var tra = new Transaction(balance,withdraw,depo,airtime,transfer,acc,time,refNum,pin1);
+                       var tra2 = _iTransactionManager.CreateDeposit(tra);
+                         System.Console.WriteLine($"Transaction successful ! \nYour RefNum is: # {tra2.RefNum}");
+                            System.Console.WriteLine($"\n\tTnx: Credit\n\tAc: {tra2.AccountNumber[0]}{tra2.AccountNumber[1]}*****{tra2.AccountNumber[7]}{tra2.AccountNumber[8]}*\n\tAmt: NGN {tra2.DepositAmount}\n\tInto: {tra2.AccountNumber}\n\tYour balance is: # {tra2.AccountBalance}\n\tDate: {time}");
                         }
                         else
                         {
-                            System.Console.WriteLine("Wrong pin");
+                            System.Console.WriteLine("\n\tWrong pin");
                         }
                          
                      }
                      else
                      {
-                        System.Console.WriteLine("Not recognize");
+                        System.Console.WriteLine("\n\tNot recognize");
                      }
 
                      
@@ -855,33 +909,79 @@ public void LogInManagingDirector()
                             pin1 = Console.ReadLine();
                         }while(pin1.Length != 4 );
                         var transact = new Transaction(0,0,0,0,0," "," "," "," ");
-                    double i = transact.AccountBalance-=airtime;
-                    double balance = i;
+                    // double i = transact.AccountBalance-=airtime;
+                    // double balance = 0;
                      long withdraw = 0;
                      long depo = 0;
                      long transfer = 0;
                      string time = DateTime.Now.ToString("dddd,dd MMMM yyyy HH:mm:ss");
                      string refNum = " ";
-                     var cus = new CustomerManager();
+                    var cus = new CustomerManager();
                      var check = cus.GetCustomer(acc);
-                     if(check != null)
-                     {
-                        if(check.Pin == pin1)
-                        {
-                             _iTransactionManager.CreateAirtime(balance,withdraw,depo,airtime,transfer,acc,time,refNum,pin1);
+
+                     var tra = new Transaction (check.AccountBalance,withdraw,depo,airtime,transfer,acc,time,refNum,pin1);
+                            if(check != null)
+                            {
+                                if(tra.Pin == check.Pin)
+                                { 
+                                    if(check.AccountType == "Student account")
+                                    {
+                                        if(check.AccountBalance <= 200000)
+                                        {
+                                            if(tra.AirtimeAmount <= check.AccountBalance)
+                                            {
+                                                                var air = _iTransactionManager.CreateAirtime(tra);
+                                                                 System.Console.WriteLine($"Transaction successful ! ");
+                                                                    System.Console.WriteLine($"\n\tTnx: Debit\n\tAc: {check.AccountNumber[0]}{check.AccountNumber[1]}*****{check.AccountNumber[7]}{check.AccountNumber[8]}*\n\tAmt: NGN {air.AirtimeAmount}\n\tYour balance is: # {air.AccountBalance}\n\tDate: {time}");
+                                                                 
+                                            }
+                                            else
+                                            {
+                                                System.Console.WriteLine("\n\tLow Balance,try to deposit");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            System.Console.WriteLine("\n\tTry to Upgrade your account");
+                                        }
+                                        
+                                    }
 
 
-                        }
-                        else
-                        {
-                            System.Console.WriteLine("Wrong pin");
-                        }
-                         
-                     }
-                     else
-                     {
-                        System.Console.WriteLine("Not recognize");
-                     }
+
+
+                                        else
+                                        {
+                                            if(tra.AirtimeAmount < check.AccountBalance && check.AccountBalance >= 500)
+                                            {
+                                               
+                                                if(tra.AirtimeAmount < check.AccountBalance)
+                                                {
+                                                     var air = _iTransactionManager.CreateAirtime(tra);
+                                                                 System.Console.WriteLine($"Transaction successful ! ");
+                                                                    System.Console.WriteLine($"\n\tTnx: Debit\n\tAc: {check.AccountNumber[0]}{check.AccountNumber[1]}*****{check.AccountNumber[7]}{check.AccountNumber[8]}*\n\tAmt: NGN {air.AirtimeAmount}\n\tYour balance is: # {air.AccountBalance}\n\tDate: {time}");
+                                                                    
+                                                }
+                                            }
+                                             else
+                                            {
+                                                System.Console.WriteLine("\n\tLow Balance,try to deposit");
+                                            }
+                                        }
+ 
+                                }
+                                else
+                                {
+                                    System.Console.WriteLine("\n\tWrong Pin");
+                                }
+
+                                
+                                
+                            }
+                            else
+                            {
+                                System.Console.WriteLine("\n\tNot Recognized");
+                            }
 
                        
                        
@@ -919,8 +1019,8 @@ public void LogInManagingDirector()
                         }while(pin1.Length != 4 );
                         var transact = new Transaction(0,0,0,0,0," "," "," "," ");
                     
-                    double x = transact.AccountBalance-= transfer;
-                    double balance = x;
+                    // double x = transact.AccountBalance-= transfer;
+                    // double balance = x;
                      long withdraw = 0;
                      long airtime = 0;
                      long depo=0;
@@ -928,25 +1028,84 @@ public void LogInManagingDirector()
                      string refNum = " ";
 
 
-                     var cus = new CustomerManager();
+                                var cus = new CustomerManager();
                      var check = cus.GetCustomer(acc);
-                     if(check != null)
-                     {
-                        if(check.Pin == pin1)
-                        {
-                        _iTransactionManager.Transfer(balance,withdraw,depo,airtime,transfer,acc,acc1,time,refNum,pin1);
-                        }
-                        else
-                        {
-                            System.Console.WriteLine("Wrong pin");
-                        }
-                         
-                     }
-                     else
-                     {
-                        System.Console.WriteLine("Not recognize");
-                     }       
+                     var check1 = cus.GetCustomer(acc1);
 
+                     var tra = new Transaction (check.AccountBalance,withdraw,depo,airtime,transfer,acc,time,refNum,pin1);
+                            if(check != null && check1 != null)
+                            {
+                                if(tra.Pin == check.Pin)
+                                { 
+                                    double charges;
+                                    if(check.AccountType == "Student account")
+                                    {
+                                        if(check.AccountBalance <= 200000)
+                                        {
+                                            if(tra.TransferAmount <= check.AccountBalance)
+                                            {
+                                                if(tra.TransferAmount >= 2000)
+                                                                {
+                                                                    charges = 0.005*tra.TransferAmount;
+                                                                    System.Console.WriteLine($"Your charges is: # {charges}");
+                                                                }
+                                                                var with = _iTransactionManager.Transfer(acc1,tra);
+                                                                 System.Console.WriteLine($"Transaction successful ! ");
+                                                                    System.Console.WriteLine($"\n\tTnx: Debit\n\tAc: {check.AccountNumber[0]}{check.AccountNumber[1]}*****{check.AccountNumber[7]}{check.AccountNumber[8]}*\n\tAmt: NGN {with.AirtimeAmount}\n\tFrom: {check.AccountNumber}\n\tYour balance is: # {with.AccountBalance}\n\tDate: {time}");
+                                                                 
+                                            }
+                                            else
+                                            {
+                                                System.Console.WriteLine("\n\tLow Balance,try to deposit");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            System.Console.WriteLine("\n\tTry to Upgrade your account");
+                                        }
+                                        
+                                    }
+
+
+
+
+                                        else
+                                        {
+                                            if(tra.TransferAmount < check.AccountBalance && check.AccountBalance >= 500)
+                                            {
+                                               
+                                                if(tra.TransferAmount < check.AccountBalance)
+                                                {
+                                                    if(tra.TransferAmount >= 2000)
+                                                                {
+                                                                    charges = 0.005*tra.TransferAmount;
+                                                                    System.Console.WriteLine($"Your charges is: #{charges}");
+                                                                }
+                                                                var with = _iTransactionManager.Transfer(acc1,tra);
+                                                                 System.Console.WriteLine($"Transaction successful ! ");
+                                                                    System.Console.WriteLine($"\n\tTnx: Debit\n\tAc: {check.AccountNumber[0]}{check.AccountNumber[1]}*****{check.AccountNumber[7]}{check.AccountNumber[8]}*\n\tAmt: NGN {with.TransferAmount}\n\tFrom: {check.AccountNumber}\n\tYour balance is: # {with.AccountBalance}\n\tDate: {time}");
+                                                                    
+                                                }
+                                            }
+                                             else
+                                            {
+                                                System.Console.WriteLine("\n\tLow Balance,try to deposit");
+                                            }
+                                        }
+ 
+                                }
+                                else
+                                {
+                                    System.Console.WriteLine("\n\tWrong Pin");
+                                }
+
+                                
+                                
+                            }
+                            else
+                            {
+                                System.Console.WriteLine("\n\tNot Recognized !\nCheck your account number");
+                            }
 
                 }
 
@@ -960,11 +1119,11 @@ public void LogInManagingDirector()
                         System.Console.WriteLine("Enter your account number");
                         string acc = Console.ReadLine();
                         var tra = _iTransactionManager.GetTransaction(refNum);
-                        var cus = new Customer(" "," "," "," "," "," "," "," "," "," ",0);
-                        var transact = new Transaction(0,0,0,0,0," "," "," "," ");
+                        // var cus = new Customer(" "," "," "," "," "," "," "," "," "," ",0);
+                        // var transact = new Transaction(0,0,0,0,0," "," "," "," ");
                         if(tra != null)
                         {
-                            System.Console.WriteLine($"\nAccount Number= {acc}\tAccoun Balance= {transact.AccountBalance}\tWithdrawal Amount= {transact.WithdrawalAmount}\tDeposit Amoun= {transact.DepositAmount}\tAirtime Amount= {transact.AirtimeAmount}\tRef num = {transact.DateTime}\tTransfer= {transact.TransferAmount}");
+                            System.Console.WriteLine($"\nAcc Number= {tra.AccountNumber}\tAcc Balance= {tra.AccountBalance}\tWithdrawal = {tra.WithdrawalAmount}\tDeposit = {tra.DepositAmount}\tAirtime = {tra.AirtimeAmount}\tTransaction date = {tra.DateTime}    Transfer= {tra.TransferAmount}\n");
                         }
                     }
 
@@ -991,10 +1150,10 @@ public void LogInManagingDirector()
                             break;
 
                              case 3:
+                             var transact = new TransactionManager();
+                                 transact.GetAllTransaction();
                              System.Console.WriteLine($"AccountBalance\tWithdrawal\tDeposit\t\tAirtime\t\tAccountNumber\t\tRefNum\t\t\ttime\t\t\t\t\tpin\tTransfer");
                              System.Console.WriteLine("_________________________________________________________________________________________________________________________________________________________________________________");
-                             var transact = new TransactionManager();
-                                 transact.GetTransactionFronSql();
                             break;
                             
                         }

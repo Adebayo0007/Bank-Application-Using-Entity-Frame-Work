@@ -6,6 +6,7 @@ namespace LegitBankApp.Model
 {
     public class Customer : User 
     {
+        public int Id {get; set;}
        
         [Key]
         public string AccountNumber {get; set;}

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LegitBankApp.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20221125083817_firstMigration")]
+    [Migration("20221126222811_firstMigration")]
     partial class firstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,6 +37,9 @@ namespace LegitBankApp.Migrations
 
                     b.Property<string>("Gender")
                         .HasColumnType("text");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.Property<string>("LastName")
                         .HasColumnType("text");
@@ -78,6 +81,9 @@ namespace LegitBankApp.Migrations
                     b.Property<string>("Gender")
                         .HasColumnType("text");
 
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
                     b.Property<string>("LastName")
                         .HasColumnType("text");
 
@@ -106,6 +112,9 @@ namespace LegitBankApp.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("text");
 
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
                     b.Property<string>("LastName")
                         .HasColumnType("text");
 
@@ -119,11 +128,15 @@ namespace LegitBankApp.Migrations
 
             modelBuilder.Entity("LegitBankApp.Transaction", b =>
                 {
-                    b.Property<string>("AccountNumber")
-                        .HasColumnType("varchar(767)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
                     b.Property<double>("AccountBalance")
                         .HasColumnType("double");
+
+                    b.Property<string>("AccountNumber")
+                        .HasColumnType("text");
 
                     b.Property<double>("AirtimeAmount")
                         .HasColumnType("double");
@@ -146,7 +159,7 @@ namespace LegitBankApp.Migrations
                     b.Property<double>("WithdrawalAmount")
                         .HasColumnType("double");
 
-                    b.HasKey("AccountNumber");
+                    b.HasKey("Id");
 
                     b.ToTable("Transaction");
                 });

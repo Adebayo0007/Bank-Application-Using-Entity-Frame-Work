@@ -6,7 +6,8 @@ namespace LegitBankApp
 {
     public class Transaction 
     {
-        [Key]
+        public int Id {get; set;}
+         public  string RefNum             {get; set;}
          public  string AccountNumber    {get; set;}
         public  double AccountBalance   {set; get;}
         public  double WithdrawalAmount {get; set;}
@@ -15,7 +16,7 @@ namespace LegitBankApp
          public double TransferAmount {get; set;}
         public string Pin             {get; set;}
         public  string DateTime         {get; set;}
-        public  string RefNum             {get; set;}
+       
        
         
         public Transaction(double accountBalance,double withdrawalAmount,double depositAmount,double airtimeAmount,double transferAmount,string accountNumber,string dateTime,string refNum,string pin) 
@@ -30,7 +31,6 @@ namespace LegitBankApp
             this.AccountNumber = accountNumber;
             this.TransferAmount = transferAmount;
             this.Pin = pin;
-            refNum = this.RefNum;
             string alpha  ="abcdefghijklmnopqrstuvwxyz".ToUpper();
             var i = new Random().Next(25);
              var j = new Random().Next(25);

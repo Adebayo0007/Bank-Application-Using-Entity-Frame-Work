@@ -6,6 +6,7 @@ namespace LegitBankApp.Model
 {
     public class Admin : User
     {
+        public int Id {get; set;}
         [Key]
         public string StaffID {get; set;}
         
